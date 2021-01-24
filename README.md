@@ -29,4 +29,9 @@
   and contributions 
   due to "global" imbalances. 
   
-  
+# Note on privacy
+  All data in `cohort.2020.csv` 
+  comes from http://cdt-aimlac.org/cdt-cohorts.html
+  and is thus publicly available,
+  except from the `Software dev Expertise` column
+  which is random data.
