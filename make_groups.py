@@ -109,6 +109,48 @@ print(
     )
 )
 
+def print_groups(students_groups):
+    ngroups = len(set(students_groups.Group))
+    column_pad = '  '
+    students_groups['FullName'] = (
+        students_groups.Name + ' ' + students_groups.Surname
+    )
+    name_lengths = students_groups.groupby('Group').FullName.apply(
+        lambda x: x.str.len().max()
+    )
+    format_string = ''
+    for group in range(ngroups):
+        format_string += '{{: <{width}}}{column_pad}'.format(
+            width=max(name_lengths[group], len(f'Group {group}')),
+            column_pad=column_pad
+        )
+    format_string = format_string[:-len(column_pad)]
+
+    print(format_string.format(
+        *[f'Group {group}' for group in range(ngroups)]
+    ))
+    print(format_string.format(
+        *['=' * len(f'Group {group}') for group in range(ngroups)]
+    ))
+
+    for row_index in range(max(
+            students_groups.groupby('Group').FullName.count()
+    )):
+        row_members = []
+        for group in range(ngroups):
+            group_members = sorted(
+                students_groups[students_groups.Group == group].FullName.values
+            )
+            if row_index >= len(group_members):
+                row_members.append('')
+            else:
+                row_members.append(group_members[row_index])
+        print(format_string.format(*row_members))
+
+
+print('\n\n')
+print_groups(students_groups)
+print('\n\n')
 
 def plot():
     from matplotlib import pyplot as plt
